@@ -24,3 +24,89 @@
 2. **Eligibility Middleware**: Checks user and feature eligibility.
 
 Details for each tab are provided in the following sections.
+
+## Match Tab
+
+The User Match Score Tab Service processes requests for fetching the match score details of a user profile against a job profile. The functionality involves:
+
+* Fetching and comparing user skills, certifications, and specializations.
+* Calculating match scores based on designation, experience, location, and allocation.
+* Returning a detailed breakdown of match results.
+
+### Controller
+
+The controller handles incoming requests, interacts with the processor, and returns the response.
+
+* Method: getUserMatchScoreDetails
+  * Purpose: Fetches match score details for a user based on profile and job requirements.
+  * Parameters:
+    * req (Object): HTTP request containing userId and profileId.
+    * res (Object): HTTP response object.
+   
+### Processor
+
+The processor performs the core logic of fetching and calculating match scores.
+
+* Retrieves user data, job profile data, and configurations.
+* Processes multiple matching criteria such as skills, certifications, designations, and availability.
+* Returns a structured response containing match scores.
+
+### Utility
+
+Provides helper functions for:
+
+* Generating formatted responses.
+* Calculating user experience.
+* Validating and extracting expected fields.
+
+### Request and Response Formats
+
+#### API Endpoint
+Request and Response Formats
+
+#### Request
+**Header**
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <your-jwt-token>"
+}
+```
+
+**Body**
+```json
+{
+  "userId": "12345",
+  "profileId": "67890"
+}
+```
+
+#### Response
+
+**Succesful Response**
+```json
+{
+  "status": true,
+  "data": {
+    "mandatorySkill": [...],
+    "optionalSkill": [...],
+    "designation": [...],
+    "experience": [...],
+    "certification": [...],
+    "specialization": [...],
+    "location": [...],
+    "availabilityDate": [...],
+    "allocationStatus": [...],
+    "competencyPercent": 85,
+    "availability": "High"
+  }
+}
+```
+
+**Error Response**
+```json
+{
+  "status": false,
+  "message": "Invalid profileId"
+}
+```
