@@ -112,3 +112,58 @@ Request and Response Formats
 ```
 ## Skills Tab
 
+The Skills Tab Service retrieves details about a user's skills, certifications, and specializations. Key functionalities include:
+
+* Fetching user-specific skill data, including endorsements, ratings, and last used details.
+* Retrieving active certifications and their associated skills.
+* Sorting and structuring the data for optimized usage.
+
+### Controller
+
+* Method: getEihUserSkillsAndCertificationsAndSpecialization
+ * Purpose: Fetch skills, certifications, and specialization data for a user.
+ * Request Parameters:
+  * userId (String): The user's unique identifier.
+ * Response:
+  * Returns structured data containing skills, certifications, and specializations.
+    
+### Processor
+
+Method: getEihUserSkillsAndCertificationsAndSpecialization
+* Fetches and processes data from multiple sources.
+* Sorts skills based on rating, experience, and last usage.
+* Filters and structures certifications and specializations.
+
+### API Details
+
+#### Endpoint
+GET /:userId/getMySkills
+
+#### Request 
+**parameters**
+userId (String)
+
+#### Response
+**Succesful Response**
+```json
+{
+  "status": true,
+  "data": {
+    "skillCategories": [...],
+    "skillItems": [...],
+    "certifications": [...],
+    "specializations": [...],
+    "lastSkillUpdatedOn": "2024-12-01T10:00:00Z"
+  }
+}
+```
+
+**Error Response**
+```json
+{
+  "status": false,
+  "message": "Error fetching skills data."
+}
+```
+
+
