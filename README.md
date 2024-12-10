@@ -257,4 +257,76 @@ userId (String)
 ```
 
 
+## Organization Level Tab
+
+The Organization Level Tab Service provides hierarchical organization details for a user, including their reporting structure and reportees. It also includes configurable organizational overview information based on user data.
+
+### Controller: orgLevelTabController.js
+* Method: getOrgLevelDetails
+ * Purpose: Handles incoming requests to retrieve organization-level details for the user.
+ * Error Handling: Logs errors and returns appropriate HTTP status codes and messages.
+
+### Processor: orgLevelTabProcessor.js
+* Method: getOrgLevelDetails
+ * Retrieves:
+  * Organizational overview information for the user based on configurable fields.
+  * Hierarchical structure, including reporting managers and reportees.
+
+### API Details
+
+#### Endpoint
+GET /:userId/getOrgLevelDetails
+
+#### Request
+**parameters**
+userId (String)
+
+#### Response
+**Succesful Response**
+```json
+{
+  "status": true,
+  "data": {
+    "orgOverviewInfo": {
+      "department": "Engineering",
+      "position": "Senior Developer",
+      "location": "New York",
+      "joiningDate": "2020-01-15"
+    },
+    "orgChart": {
+      "reportingToList": [
+        {
+          "name": "John Doe",
+          "src": "https://example.com/profiles/john.jpg",
+          "designation": "Manager",
+          "empId": "E12345"
+        }
+      ],
+      "currentUserInfo": {
+        "name": "Jane Smith",
+        "src": "https://example.com/profiles/jane.jpg",
+        "designation": "Senior Developer",
+        "empId": "E54321"
+      },
+      "reporteesList": [
+        {
+          "name": "Alice Brown",
+          "src": "https://example.com/profiles/alice.jpg",
+          "designation": "Junior Developer",
+          "empId": "E67890"
+        }
+      ]
+    }
+  }
+}
+```
+
+**Error Response**
+```json
+{
+  "status": false,
+  "message": "Error fetching organization-level details."
+}
+```
+
 ## 
