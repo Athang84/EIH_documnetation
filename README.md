@@ -166,4 +166,95 @@ userId (String)
 }
 ```
 
+## Projects Tab
 
+### Controller
+Function: getUsersProjects
+Description:
+Handles requests to fetch a user's project data.
+
+* Calls the processor function getUserProject to fetch and process project details.
+
+### Processor
+* Method: getUserProjects
+ * Fetches and processes:
+  * User's basic allocation details (bench ageing, availability, pool code).
+  * Project allocations grouped into past, current, and future.
+  * Skills used in each project
+
+### API Detials
+
+#### Endpoint
+GET /:userId/getUserProjects
+
+#### Request
+**parameters**
+userId (String)
+
+#### Response
+**Succesful Response**
+```json
+{
+  "status": true,
+  "data": {
+    "basicEmpDetails": {
+      "benchAgeing": 30,
+      "availableFrom": "2024-12-15",
+      "candidateAllocationPoolCode": "ACTIVE",
+      "candidateAllocationName": "Engineering",
+      "candidateMultiAllocationStatus": "Single",
+      "candidateIsSearchableAllocationPool": "Yes"
+    },
+    "allocations": {
+      "past": [
+        {
+          "candidateAllocationStartDate": "2023-01-01",
+          "candidateAllocationEndDate": "2023-12-01",
+          "candidateProjectName": "Project A",
+          "candidateProjectId": "P123",
+          "candidateCustomerId": "C001",
+          "candidateCustomerName": "Customer X",
+          "candidateAllocationPercentage": 100,
+          "skillsUsed": ["Java", "Spring Boot"]
+        }
+      ],
+      "current": [
+        {
+          "candidateAllocationStartDate": "2023-12-02",
+          "candidateAllocationEndDate": "2024-12-01",
+          "candidateProjectName": "Project B",
+          "candidateProjectId": "P124",
+          "candidateCustomerId": "C002",
+          "candidateCustomerName": "Customer Y",
+          "candidateAllocationPercentage": 50,
+          "skillsUsed": ["Python", "Django"]
+        }
+      ],
+      "future": [
+        {
+          "candidateAllocationStartDate": "2025-01-01",
+          "candidateAllocationEndDate": "2025-12-01",
+          "candidateProjectName": "Project C",
+          "candidateProjectId": "P125",
+          "candidateCustomerId": "C003",
+          "candidateCustomerName": "Customer Z",
+          "candidateAllocationPercentage": 75,
+          "skillsUsed": ["React", "Node.js"]
+        }
+      ]
+    }
+  }
+}
+
+```
+
+**Error Response**
+```json
+{
+  "status": false,
+  "message": "Error fetching project data."
+}
+```
+
+
+## 
