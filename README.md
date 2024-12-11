@@ -329,4 +329,185 @@ userId (String)
 }
 ```
 
-## 
+## Feedback Tab
+
+### Controller: userFeedbackController.js
+* Method: getUserFeedbacks
+ * Purpose: Handles incoming requests to retrieve feedback data for the user.
+ * Error Handling: Logs errors and returns appropriate HTTP status codes and messages.
+
+### Processor: userFeedbackProcessor.js
+* Method: getUserFeedbacks
+ * Fetches:
+  * Feedback for selected and rejected candidates from the database.
+  * Candidate status and historical data to generate detailed feedback.
+    
+### API Details
+
+#### Endpoint
+GET /:userId/getUserFeedbacks
+
+#### Request
+**parameters**
+userId (String)
+
+#### Response
+**Succesful Response**
+```json
+{
+  "status": true,
+  "data": [
+    {
+      "name": "Feedback for Job Profile A",
+      "type": "Selection",
+      "date": "2024-01-15T12:30:00Z",
+      "candidateOverallRating": 4.5,
+      "reason": "Excellent performance in technical skills",
+      "internalFeedback": "Candidate showed great potential.",
+      "clientFeedback": "Highly recommended.",
+      "candidateImprovementSectors": ["Communication Skills"],
+      "additionalFeedback": "Needs improvement in time management.",
+      "evaluationDoneBy": "John Doe",
+      "skillsEvaluatedOn": ["Java (4/5)", "SQL (5/5)"]
+    }
+  ]
+}
+```
+
+**Error Response**
+```json
+{
+  "status": false,
+  "message": "Error fetching feedback details."
+}
+```
+
+## Resumes Tab
+
+The Resumes Tab Service allows users to view and manage their resumes, including those uploaded manually and generated from their profiles. It fetches resume details, sorts them by the latest update date, and provides pre-signed URLs for secure access to resume files.
+
+### Controller: userResumesController.js
+Method: getUserResume
+* Purpose: Handles incoming requests to retrieve resume details for a user.
+* Error Handling: Logs errors and returns appropriate HTTP status codes and messages.
+
+### Processor: userResumeProcessor.js
+Method: getUserResume
+* Fetches:
+`* Resumes uploaded by the user.
+ * Resumes generated from user profiles.
+
+### API Details
+
+#### Endpoint
+GET /:userId/getUserResume
+
+#### Request
+**parameters**
+userId (String)
+
+#### Response
+**Succesful Response**
+```json
+{
+  "status": true,
+  "data": [
+    {
+      "name": "John_Doe_Resume.pdf",
+      "loc": "https://example-bucket.s3.amazonaws.com/John_Doe_Resume.pdf?AWSAccessKeyId=...&Expires=...",
+      "source": "Uploaded by User",
+      "dt": "2024-01-15T12:30:00Z"
+    },
+    {
+      "name": "Generated_Resume_Profile_A.pdf",
+      "loc": "https://example-bucket.s3.amazonaws.com/Generated_Resume_Profile_A.pdf?AWSAccessKeyId=...&Expires=...",
+      "source": "Built from Profile",
+      "dt": "2024-01-10T09:15:00Z"
+    }
+  ]
+}
+```
+
+**Error Response**
+```json
+{
+  "status": false,
+  "message": "Error fetching resume details."
+}
+```
+
+## Notes Tab
+
+The Notes Tab Service manages candidate-related notes, including creation, retrieval, deletion, restoration, and attachments. It ensures secure handling of notes and adheres to user roles and permissions.
+
+### Controller: userNotesController.js
+Methods:
+* createUserNotes
+ * Handles the creation of new notes.
+* getUserNotes
+ * Retrieves notes based on the candidate and publishing type.
+* deleteUserNotes
+ * Deletes a note by its ID.
+* undoUserNotes
+ * Restores a deleted note.
+* addAttachmentToUserNotes
+ * Adds attachments to an existing note.
+
+### Processor: userNotesProcessor.js
+Methods:
+* createUserNotes
+ * Saves a note using the saveNote service.
+ * Validates role and permissions before saving.
+* getUserNotes
+ * Fetches notes for a candidate.
+ * Includes details like deletion status and modifier info.
+* deleteUserNotes
+ * Deletes a note by calling the removeNote service.
+* undoUserNotes
+ * Restores a deleted note using the reviveNote service.
+* addAttachmentToUserNotes
+ * Attaches files to a note.
+
+   
+### API Details
+
+#### Endpoint
+POST /notes/:noteId/addAttachment
+
+#### Request
+**parameters**
+userId (String)
+
+**Request Body**
+```json
+{
+  "title": "Follow-up Meeting",
+  "content": "Discuss progress with the candidate.",
+  "publishType": "Private",
+  "attachments": ["file1.pdf", "file2.png"]
+}
+```
+
+#### Response
+**Succesful Response**
+```json
+{
+  "status": true,
+  "data": {
+    "noteId": "12345",
+    "title": "Follow-up Meeting",
+    "content": "Discuss progress with the candidate.",
+    "publishType": "Private",
+    "createdBy": "John Doe",
+    "createdDate": "2024-12-10T14:00:00Z"
+  }
+}
+```
+
+**Error Response**
+```json
+{
+  "status": false,
+  "message": "Error occurred while processing the request."
+}
+```
